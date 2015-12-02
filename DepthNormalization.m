@@ -26,7 +26,7 @@ while (~stop)
    
     
     P1 = Icol(5, :); % The pixel we are looking at 
-    B = max(Icol([1:4, 6:9], :)); % The sum of neighbouring pixels of P1
+    B = max(Icol([1:4, 6:9], :)); % The maximun neighbouring pixels of P1
     
     for i = 1 : K
         % Checking if we are on countour and if a), c) and d) holds

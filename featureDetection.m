@@ -1,4 +1,4 @@
-function J = edgeDetection(I)
+function [C, E] = featureDetection(I)
 % EDGEDETECTION uses a the Canny edge detection algorithm to detect edges.
 %   J = edgeDetection(I) returns an image J containing the edges in I. The
 %   edges are comouted using the following scheme:
@@ -8,38 +8,35 @@ function J = edgeDetection(I)
 %   4. Thersholding
     
     [row, col] = size(I);
-    J = zeros(row, col);
-    P = J;
-    Q = J;
-    M = J;
-    THETA = J;
-    t = 7;
+    C = zeros(row, col);
+    E = C;
+    t = 25;
+    
+    dx = [-1 0 1; -1 0 1; -1 0 1];
+    dy = dx';
     
     % Smoothing image with a Gaussian filter
     w = gaussianFilter(2, 2, 7, 7, 0);
     S = conv2(double(I), w, 'same');
     
-    % Computing the partial derivatives, and the magnitude and orientation
-    % of the gradient, using an improved 3-by-3 neighborhood to calculate
-    % the gradient.
-    for i = 1:row
-        for j = 1:col
-            if i == row
-                P(i,j) = P(i-1, j);
-                Q(i,j) = Q(i-1, j);
-            elseif j == col
-                P(i,j) = P(i, j-1);
-                Q(i,j) = Q(i, j-1);
-            else
-                P(i,j) = (S(i,j+1) - S(i,j) + S(i+1,j+1) - S(i+1,j))/2;
-                Q(i,j) = (S(i,j) - S(i+1,j) + S(i,j+1) - S(i+1,j+1))/2;
-            end
-%             P(i,j) = (S(i,j+1) - S(i,j-1) + S(i-1,j+1) - S(i-1,j-1) + S(i+1,j+1) - S(i+1,j-1))/2;
-%             Q(i,j) = (S(i+1,j) - S(i-1,j) + S(i+1,j-1) - S(i-1,j-1) + S(i+1,j+1) - S(i-1,j+1))/2;
-            M(i,j) = sqrt(P(i,j)^2 + Q(i,j)^2);
-            THETA(i,j) = atan2(Q(i,j), P(i,j));
-        end
-    end
+    % Computing intensity gradients, and its magnitude and direction
+    P = conv2(S, dx, 'same');
+    Q = conv2(S, dy, 'same');
+    M = sqrt(P.^2 + Q.^2);
+    THETA = atan2(Q, P);
+    
+    % Computing the smoothed square of the gradients
+    P2 = conv2(P.^2, w, 'same');
+    Q2 = conv2(Q.^2, w, 'same');
+    PQ = conv2(P.*Q, w, 'same');
+    
+    % Computing the Harris corner measure
+    C = (P2.*Q2 - PQ.^2) - 0.04*(P2 + Q2).^2;
+    radius = 1;
+    sze = 2*radius+1;                   % Size of mask.
+	mx = ordfilt2(C,sze^2,ones(sze)); % Grey-scale dilate.
+	C = (C==mx)&(C>1200);       % Find maxima.
+	
     
     % Nonmaxima suppression, i.e removing magnitudes in M that are not
     % maximum compared to its neighbors in the direction of the gradient
@@ -67,7 +64,7 @@ function J = edgeDetection(I)
     % Thresholding and clearing border
     N(N<t) = 0;
     N(N>0) = 1;
-    J = imclearborder(N);
+    E = imclearborder(N);
 
 end
 
