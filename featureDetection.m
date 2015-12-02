@@ -1,4 +1,4 @@
-function [C, E] = featureDetection(I)
+function [C, E] = featureDetection(I, w)
 % EDGEDETECTION uses a the Canny edge detection algorithm to detect edges.
 %   J = edgeDetection(I) returns an image J containing the edges in I. The
 %   edges are comouted using the following scheme:
@@ -16,7 +16,6 @@ function [C, E] = featureDetection(I)
     dy = dx';
     
     % Smoothing image with a Gaussian filter
-    w = gaussianFilter(2, 2, 7, 7, 0);
     S = conv2(double(I), w, 'same');
     
     % Computing intensity gradients, and its magnitude and direction
@@ -30,12 +29,12 @@ function [C, E] = featureDetection(I)
     Q2 = conv2(Q.^2, w, 'same');
     PQ = conv2(P.*Q, w, 'same');
     
-    % Computing the Harris corner measure
+    % Computing the Harris corner measure and does nonmaxima supression
     C = (P2.*Q2 - PQ.^2) - 0.04*(P2 + Q2).^2;
-    radius = 1;
+    radius = 2;
     sze = 2*radius+1;                   % Size of mask.
 	mx = ordfilt2(C,sze^2,ones(sze)); % Grey-scale dilate.
-	C = (C==mx)&(C>1200);       % Find maxima.
+	C = (C==mx)&(C>1000);       % Find maxima.
 	
     
     % Nonmaxima suppression, i.e removing magnitudes in M that are not
