@@ -1,13 +1,20 @@
-% I_d = imread('rgbd-dataset\apple\apple_1\apple_1_1_1_depthcrop.png');
-% I_rgb = imread('rgbd-dataset\apple\apple_1\apple_1_1_1_crop.png');
-I_d = imread('rgbd-dataset\banana\banana_1_1_1_depthcrop.png');
-I_rgb = imread('rgbd-dataset\banana\banana_1_1_1_crop.png');
+ I_d = imread('rgbd-dataset/apple/apple_1/apple_1_1_1_depthcrop.png');
+ I_mask = imread('rgbd-dataset/apple/apple_1/apple_1_1_1_maskcrop.png');
+ I_rgb = imread('rgbd-dataset/apple/apple_1/apple_1_1_1_crop.png');
+%I_d = imread('rgbd-dataset/banana/banana_1_1_1_depthcrop.png');
+%I_rgb = imread('rgbd-dataset/banana/banana_1_1_1_crop.png');
 [row, col] = size(I_d);
+
+
+%I_rgb = I_rgb.*I_mask;
 
 % Normalizing the depth image, i.e replacing zero-values with valid values
 % nearby
-Inorm = depthNormalization(I_d);
+Inorm = DepthNormalization(I_d);
 
+
+I_mask = uint16(I_mask);
+Inorm = Inorm.*I_mask;
 % Extracting corners and edges
 [C, E] = featureDetection(Inorm);
 [C2, E2] = featureDetection(rgb2gray(I_rgb));
