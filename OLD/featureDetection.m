@@ -1,4 +1,4 @@
-function [C, E] = featureDetection(I, w)
+function [C, E] = featureDetection(I, w, t)
 % EDGEDETECTION uses a the Canny edge detection algorithm to detect edges.
 %   J = edgeDetection(I) returns an image J containing the edges in I. The
 %   edges are comouted using the following scheme:
@@ -10,7 +10,6 @@ function [C, E] = featureDetection(I, w)
     [row, col] = size(I);
     C = zeros(row, col);
     E = C;
-    t = 25;
     
     dx = [-1 0 1; -1 0 1; -1 0 1];
     dy = dx';

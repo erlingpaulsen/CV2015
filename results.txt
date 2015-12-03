@@ -1,0 +1,26 @@
+Number of images processed: 5
+Percentage of images where we sucessfully extracted 
+ the object region from the depth map: 60 % 
+Percentage of images where we sucessfully extracted 
+ the object region from the RGB image: 100 % 
+
+
+Number of images processed: 50
+Percentage of images where we sucessfully extracted 
+ the object region from the depth map: 78 % 
+Percentage of images where we sucessfully extracted 
+ the object region from the RGB image: 96 % 
+
+
+Number of images processed: 100
+Percentage of images where we sucessfully extracted 
+ the object region from the depth map:  85 % 
+Percentage of images where we sucessfully extracted 
+ the object region from the RGB image:  98 %
+
+
+Number of images processed: 208
+Percentage of images where we sucessfully extracted 
+ the object region from the depth map: 77.40 % 
+Percentage of images where we sucessfully extracted 
+ the object region from the RGB image: 97.60 % 
