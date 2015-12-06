@@ -46,12 +46,12 @@
 %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-sd1 = 'rgbd-dataset/apple/apple_1/apple_1_1_';
+sd1 = 'rgbd-dataset/bowl/bowl_1/bowl_1_1_';
 sd2 = '_depthcrop.png';
-srgb1 = 'rgbd-dataset/apple/apple_1/apple_1_1_';
+srgb1 = 'rgbd-dataset/bowl/bowl_1/bowl_1_1_';
 srgb2 = '_crop.png';
 
-N = 100; % Number of pictures to process
+N = 10; % Number of pictures to process
 
 %
 % To store the connected components structure CC, which is returned from
@@ -173,14 +173,14 @@ S2 = bwmorph(R2, 'skel', Inf);
 % Plotting the detected regions
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% figure;
-% [y, x] = find(R);
-% subplot(1,2,1), imagesc(I_rgb), axis image, colormap(gray), hold on
-% 	    plot(x,y,'y.'), title('Region detected from depth map');
-% 
-% [y, x] = find(R2);
-% subplot(1,2,2), imagesc(I_rgb), axis image, colormap(gray), hold on
-% 	    plot(x,y,'y.'), title('Region detected from RGB image');
+figure;
+[y, x] = find(R);
+subplot(1,2,1), imagesc(I_rgb), axis image, colormap(gray), hold on
+	    plot(x,y,'y.'), title('Region detected from depth map');
+
+[y, x] = find(R2);
+subplot(1,2,2), imagesc(I_rgb), axis image, colormap(gray), hold on
+	    plot(x,y,'y.'), title('Region detected from RGB image');
         
         
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -195,7 +195,7 @@ S2 = bwmorph(R2, 'skel', Inf);
 % [y, x] = find(S2);
 % subplot(1,2,2), imagesc(I_rgb), axis image, colormap(gray), hold on
 % 	    plot(x,y,'y.'), title('Skeleton detected from RGB image');
-        
+
 end % End of for-loop
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -211,10 +211,13 @@ for i = 1 : N
    
    if CC_d.NumObjects == 1 % If the CC structure only has one component => success
        n_d = n_d + 1;
+       props{n_d} = regionprops(Components_d{i},'all');
+
    end
    
    if CC_rgb.NumObjects == 1 % If the CC structure only has one component => success
        n_rgb = n_rgb + 1;
+       %rgbprops{n_rgb} = regionprops(Components_rgb{i});
    end
 end
 
@@ -225,6 +228,7 @@ percent_rgb = double(n_rgb/N)*100;
 fprintf('Number of images processed: %d\n',N);
 fprintf('Percentage of images where we sucessfully extracted \n the object region from the depth map: %3.2d %% \n',percent_d);
 fprintf('Percentage of images where we sucessfully extracted \n the object region from the RGB image: %3.2d %% \n',percent_rgb);
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
