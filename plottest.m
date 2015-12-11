@@ -1,43 +1,41 @@
-xmin = 1;
-xmax = 5;
-ymin = 0;
-ymax = 6;
+
+x = 0:1:5;
 
 figure;
 subplot(2,3,1)
+set(gca,'yscale','log')
 hold on
 for i=1:an
-    plot(applefeatures(i,1:6),'b-'), title('applefeatures')
-    axis([xmin,xmax,ymin,ymax])
+    semilogy(x,applefeatures(i,:),'b-'), title('applefeatures')
 end
 hold off
 subplot(2,3,2)
+set(gca,'yscale','log')
 hold on
 for i=1:ban
-    plot(bananafeatures(i,1:6),'r-'), title('bananafeatures')
-    axis([xmin,xmax,ymin,ymax])
+    semilogy(x,bananafeatures(i,:),'r-'), title('bananafeatures')
 
 end
 hold off
 subplot(2,3,3)
+set(gca,'yscale','log')
 hold on
 for i=1:bon
-    plot(bowlfeatures(i,1:6),'g-'),title('bowlfeatures')
-    axis([xmin,xmax,ymin,ymax])
+    semilogy(x,bowlfeatures(i,:),'g-'),title('bowlfeatures')
 
 end
 hold off
 subplot(2,3,4)
+set(gca,'yscale','log')
 hold on
 for i=1:mn
-    plot(mushroomfeatures(i,1:6),'c-'),title('mushroomfeatures')
-    axis([xmin,xmax,ymin,ymax])
+    semilogy(x,mushroomfeatures(i,:),'c-'),title('mushroomfeatures')
 end
 hold off
 subplot(2,3,5)
+set(gca,'yscale','log')
 hold on
 for i=1:kn
-    plot(keyboardfeatures(i,1:6),'m-'),title('keyboardfeatures')
-    axis([xmin,xmax,ymin,ymax])
+    semilogy(x,keyboardfeatures(i,:),'m-'),title('keyboardfeatures')
 end
 hold off
